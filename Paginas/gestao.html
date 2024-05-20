@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Drones</title>
+    <link rel="stylesheet" href="ubi.css"> <!-- Inclua aqui seu arquivo CSS -->
+</head>
+<body>
+<header>
+    <h2>Gestão de Drones</h2>
+    <p>Gerencie as peças e as montagens dos seus drones</p>
+</header>
+<main>
+    <section id="pecas">
+        <h3>Gestão de Peças</h3>
+        <form>
+            <div class="container">
+                <div class="input-item">
+                    <label for="peca-nome">Nome da Peça:</label>
+                    <input id="peca-nome" class="form-input" type="text" required>
+                </div>
+                <div class="input-item">
+                    <label for="peca-quantidade">Quantidade:</label>
+                    <input id="peca-quantidade" class="form-input" type="number" required>
+                </div>
+                <button type="submit">Adicionar Peça</button>
+            </div>
+        </form>
+    </section>
+
+    <section id="montagens">
+        <h3>Gestão de Montagens</h3>
+        <form>
+            <div class="container">
+                <div class="input-item">
+                    <label for="drone-modelo">Modelo do Drone:</label>
+                    <input id="drone-modelo" class="form-input" type="text" required>
+                </div>
+                <div class="input-item">
+                    <label for="pecas-necessarias">Peças Necessárias:</label>
+                    <input id="pecas-necessarias" class="form-input" type="text" required>
+                </div>
+                <button type="submit">Adicionar Montagem</button>
+            </div>
+        </form>
+    </section>
+
+    <section id="estatisticas">
+        <h3>Estatísticas</h3>
+        <div class="container">
+            <p>Aqui estarão as estatísticas sobre o processo de montagem.</p>
+            <!-- Placeholder para futuras integrações com gráficos e estatísticas -->
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -18,6 +18,10 @@ app.get('/registar', (req, res) => {
   res.sendFile(path.join(__dirname, 'Paginas', 'registo.html'));
 });
 
+app.get('/gestao', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Paginas', 'gestao.html'));
+});
+
 
 const PORT = 8080;
 app.listen(PORT, () => {

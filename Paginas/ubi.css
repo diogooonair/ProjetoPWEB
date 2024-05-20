@@ -11,37 +11,23 @@
 
 /* Start body rules */
 body {
-    background-image: linear-gradient(-225deg, #1d4f7a 0%, #233558 100%);
-background-image: linear-gradient(to top, #7173b3 0%, #1d2642 100%);
-background-attachment: fixed;
-  background-repeat: no-repeat;
-
-  font-family: "Jersey 25 Charted", sans-serif;
-  font-weight: 200;
-  font-style: normal;
-/*   the main font */
-font-family: "Sedan SC", serif;
-font-weight: 200;
-font-style: normal;
-opacity: .85;
-/* background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%); */
+    background-image: linear-gradient(to top, #7173b3 0%, #1d2642 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-family: "Sedan SC", serif;
+    font-weight: 200;
+    font-style: normal;
+    opacity: .85;
+    color: #fff;
+    padding: 2%;
 }
-
-
-
-/* |||||||||||||||||||||||||||||||||||||||||||||*/
-/* //////////////////////////////////////////// */
-
-
-
-
 /* End body rules */
 
-/* Start form  attributes */
+/* Start form attributes */
 form {
-    width: 450px;
-    min-height: 700px;
-    height: auto;
+    width: 100%;
+    max-width: 450px;
+    min-height: 300px;
     border-radius: 5px;
     margin: 2% auto;
     box-shadow: 0 9px 50px hsla(20, 67%, 75%, 0.31);
@@ -50,137 +36,101 @@ form {
 }
 /* form Container */
 form .container {
-    display: -webkit-flex;
     display: flex;
-  
-    -webkit-justify-content: space-around;
+    flex-direction: column;
     justify-content: space-around;
-  
-    -webkit-flex-wrap: wrap;
-    flex-wrap: wrap;
-  
-      margin: 0 auto;
+    margin: 0 auto;
 }
 
-/* the header form form */
+/* the header form */
 header {
-    margin: 2% auto 10% auto;
     text-align: center;
+    margin-bottom: 2%;
 }
-/* Login title form form */
 header h2 {
     font-family: "Jersey 25 Charted", sans-serif;
     font-weight: 200;
     font-style: normal;
-    color: #3e403f;
-    font-size: 500%;
+    color: #fff;
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
 }
-/*  A welcome message or an explanation of the login form */
 header p {
-    letter-spacing: 0.05em;
+    font-family: "Jersey 25 Charted", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    color: #fff;
+    font-size: 1.2em;
+}
+
+/* Section headers */
+section h3 {
     font-family: "Jersey 25 Charted", sans-serif;
     font-weight: 200;
     font-style: normal;
     color: #3e403f;
-    font-size: 150%;
+    font-size: 1.8em;
+    margin: 1em 0;
+    text-align: center;
 }
-
-
-
-/* //////////////////////////////////////////// */
-/* //////////////////////////////////////////// */
-
 
 .input-item {
     background: #6174a6;
-    color: #5817bb;
-    padding: 14.5px 0px 15px 9px;
-    border-radius: 5px 0px 0px 5px;
+    color: #fff;
+    padding: 14.5px 9px;
+    margin-bottom: 1em;
+    border-radius: 5px;
 }
 
+.input-item label {
+    display: block;
+    margin-bottom: 0.5em;
+}
 
-
-/* Show/hide password Font Icon */
-
-/* inputs form  */
-input[class="form-input"]{
-    width: 240px;
-    height: 50px;
-  
-    margin-top: 2%;
-    padding: 15px;
-    
+input.form-input {
+    width: calc(100% - 20px);
+    height: 40px;
+    padding: 0 10px;
     font-family: "Raleway", sans-serif;
-     font-optical-sizing: auto;
-     font-weight: 900;
-    font-style: normal;
+    font-weight: 900;
     color: #5817bb;
-  
     outline: none;
     border: none;
-  
-    border-radius: 0px 5px 5px 0px;
+    border-radius: 5px;
     transition: 0.2s linear;
-    
 }
-input[id="txt-input"] {width: 250px;}
-/* focus  */
-input:focus {
+
+input.form-input:focus {
     transform: translateX(-2px);
     border-radius: 5px;
 }
 
-/* //////////////////////////////////////////// */
-/* //////////////////////////////////////////// */
-
-/* input[type="text"] {min-width: 250px;} */
-/* buttons  */
 button {
-    display: inline-block;
+    display: block;
     color: #5817bb;
-  
-    width: 280px;
+    width: 100%;
     height: 50px;
-  
     padding: 0 20px;
     background: #fff;
     border-radius: 5px;
-    
     outline: none;
     border: none;
-  
     cursor: pointer;
     text-align: center;
     transition: all 0.2s linear;
-    
-    margin: 7% auto;
+    margin: 1em 0;
     letter-spacing: 0.05em;
 }
-/* Submits */
-.submits {
-    width: 48%;
-    display: inline-block;
-    float: left;
-    margin-left: 2%;
-}
 
-/*       Forgot Password button FAF3DD  */
-.frgt-pass {background: transparent;}
-
-/*     Sign Up button  */
-.sign-up {background: #ffffff;}
-
-
-/* buttons hover */
 button:hover {
-    transform: translatey(3px);
+    transform: translateY(3px);
     box-shadow: none;
 }
 
-/* buttons hover Animation */
 button:hover {
     animation: ani9 0.4s ease-in-out infinite alternate;
 }
+
 @keyframes ani9 {
     0% {
         transform: translateY(3px);
@@ -188,4 +138,17 @@ button:hover {
     100% {
         transform: translateY(5px);
     }
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2%;
+}
+
+section {
+    margin-bottom: 2em;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2%;
+    border-radius: 5px;
 }
