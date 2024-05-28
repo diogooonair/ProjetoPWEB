@@ -19,7 +19,19 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
+const pecaSchema = new mongoose.Schema({
+  nome: String,
+  quantidade: Number
+});
+
+const montagemSchema = new mongoose.Schema({
+  modeloDrone: String,
+  pecasNecessarias: [String] // Array de IDs de peças
+});
+
 const User = mongoose.model('User', userSchema);
+const Peca = mongoose.model('Peca', pecaSchema);
+const Montagem = mongoose.model('Montagem', montagemSchema);
 
 app.use(express.static(path.join(__dirname, 'Paginas')));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,24 +40,18 @@ app.use(cookieParser());
 
 app.get('/', (req, res) => {
     const user = req.cookies.user;
-     if (user) {
-       return res.redirect('/gestao');
-     }
-      
-      
-
-     res.redirect('/login');
+    if (user) {
+      return res.redirect('/gestao');
+    }
+    res.redirect('/login');
 });
 
 app.get('/login', (req, res) => {
     const user = req.cookies.user;
-     if (user) {
-       return res.redirect('/gestao');
-     }
-      
-      
-
-     res.sendFile(path.join(__dirname, 'Paginas', 'login.html'));
+    if (user) {
+      return res.redirect('/gestao');
+    }
+    res.sendFile(path.join(__dirname, 'Paginas', 'login.html'));
 });
 
 app.post('/login', async (req, res) => {
@@ -75,8 +81,54 @@ app.get('/gestao', (req, res) => {
   if (!user) {
     return res.status(401).send('Acesso não autorizado');
   }
-  
   res.sendFile(path.join(__dirname, 'Paginas', 'gestao.html'));
+});
+
+// Rota para obter a lista de peças
+app.get('/pecas', async (req, res) => {
+  try {
+    const pecas = await Peca.find();
+    res.json(pecas);
+  } catch (error) {
+    console.error('Erro ao obter peças:', error);
+    res.status(500).send('Erro interno');
+  }
+});
+
+// Rota para adicionar uma nova peça
+app.post('/pecas', async (req, res) => {
+  const { nome, quantidade } = req.body;
+  
+  try {
+    const novaPeca = new Peca({
+      nome: nome,
+      quantidade: quantidade
+    });
+    
+    await novaPeca.save();
+    res.status(201).send('Peça adicionada com sucesso');
+  } catch (error) {
+    console.error('Erro ao adicionar peça:', error);
+    res.status(500).send('Erro interno');
+  }
+});
+
+// Rota para adicionar uma nova montagem
+app.post('/montagens', async (req, res) => {
+  const { modeloDrone, pecasNecessarias } = req.body;
+  
+  try {
+    const novaMontagem = new Montagem({
+      modeloDrone: modeloDrone,
+      pecasNecessarias: pecasNecessarias
+    });
+    
+    await novaMontagem.save();
+    res.status(201).send('Montagem adicionada com sucesso');
+  } catch (error) {
+    console.error('Erro ao adicionar montagem:', error);
+    res.status(500).send('Erro interno');
+  }
 });
 
 const PORT = process.env.PORT || 8080;

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Drones</title>
-    <link rel="stylesheet" href="ubi.css"> 
+    <link rel="stylesheet" href="ubi.css"> <!-- Inclua aqui seu arquivo CSS -->
 </head>
 <body>
 <header>
@@ -14,7 +14,7 @@
 <main>
     <section id="pecas">
         <h3>Gestão de Peças</h3>
-        <form>
+        <form id="form-peca">
             <div class="container">
                 <div class="input-item">
                     <label for="peca-nome">Nome da Peça:</label>
@@ -31,7 +31,7 @@
 
     <section id="montagens">
         <h3>Gestão de Montagens</h3>
-        <form>
+        <form id="form-montagem">
             <div class="container">
                 <div class="input-item">
                     <label for="drone-modelo">Modelo do Drone:</label>
@@ -39,7 +39,9 @@
                 </div>
                 <div class="input-item">
                     <label for="pecas-necessarias">Peças Necessárias:</label>
-                    <input id="pecas-necessarias" class="form-input" type="text" required>
+                    <select id="pecas-necessarias" class="form-input" multiple required>
+                        <!-- Opções de peças serão adicionadas dinamicamente via JavaScript -->
+                    </select>
                 </div>
                 <button type="submit">Adicionar Montagem</button>
             </div>
@@ -54,5 +56,85 @@
         </div>
     </section>
 </main>
+
+<script>
+    // Função para carregar opções de peças
+    async function carregarPecas() {
+        try {
+            const response = await fetch('/pecas');
+            const pecas = await response.json();
+            
+            const selectElement = document.getElementById('pecas-necessarias');
+            selectElement.innerHTML = ''; // Limpar as opções atuais
+            pecas.forEach(peca => {
+                const option = document.createElement('option');
+                option.value = peca._id; // Supondo que o ID da peça seja utilizado como valor
+                option.text = peca.nome;
+                selectElement.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Erro ao carregar opções de peças:', error);
+        }
+    }
+    
+    // Chamar a função para carregar as opções de peças quando a página carregar
+    window.onload = carregarPecas;
+    
+    // Adicionar peça
+    document.getElementById('form-peca').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        const nome = document.getElementById('peca-nome').value;
+        const quantidade = document.getElementById('peca-quantidade').value;
+        
+        try {
+            const response = await fetch('/pecas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nome, quantidade })
+            });
+            
+            if (response.ok) {
+                alert('Peça adicionada com sucesso');
+                document.getElementById('form-peca').reset();
+                carregarPecas(); // Recarregar opções de peças
+            } else {
+                alert('Erro ao adicionar peça');
+            }
+        } catch (error) {
+            console.error('Erro ao adicionar peça:', error);
+        }
+    });
+    
+    // Adicionar montagem
+    document.getElementById('form-montagem').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        
+        const modeloDrone = document.getElementById('drone-modelo').value;
+        const pecasNecessarias = Array.from(document.getElementById('pecas-necessarias').selectedOptions).map(option => option.value);
+        
+        try {
+            const response = await fetch('/montagens', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ modeloDrone, pecasNecessarias })
+            });
+            
+            if (response.ok) {
+                alert('Montagem adicionada com sucesso');
+                document.getElementById('form-montagem').reset();
+            } else {
+                alert('Erro ao adicionar montagem');
+            }
+        } catch (error) {
+            console.error('Erro ao adicionar montagem:', error);
+        }
+    });
+</script>
+
 </body>
 </html>
