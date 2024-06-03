@@ -46,6 +46,40 @@ app.get('/', (req, res) => {
     res.redirect('/login');
 });
 
+app.get('/registo', (req, res) => {
+  const user = req.cookies.user;
+  if (user) {
+    return res.redirect('/gestao');
+  }
+  res.sendFile(path.join(__dirname, 'Paginas', 'registo.html'));
+});
+
+app.post('/registar', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const existingUser = await User.findOne({ username: username });
+    if (existingUser) {
+      return res.status(400).send('Username already exists');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const newUser = new User({
+      username: username,
+      password: hashedPassword,
+    });
+
+    // Save the user to the database
+    await newUser.save();
+    res.status(201).send('Utilizador Rgistado COm SUcesso');
+  } catch (error) {
+    console.error('Erro ao registar user:', error);
+    res.status(500).send('Erro interno');
+  }
+});
+
+
 app.get('/login', (req, res) => {
     const user = req.cookies.user;
     if (user) {
@@ -53,6 +87,8 @@ app.get('/login', (req, res) => {
     }
     res.sendFile(path.join(__dirname, 'Paginas', 'login.html'));
 });
+
+
 
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
