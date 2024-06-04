@@ -221,22 +221,24 @@ app.post('/montagens/:id/completar', async (req, res) => {
   try {
     const montagem = await Montagem.findById(id);
     if (!montagem) {
+      console.log("montagem invalida");
       return res.status(404).send('Montagem não encontrada');
     }
 
     for (const pecaId of montagem.pecasNecessarias) {
       const peca = await Peca.findById(pecaId);
       if (!peca) {
+        console.log("peca invalida");
         return res.status(404).send('Peça não encontrada');
       }
       peca.quantidade -= 1;
       if (peca.quantidade < 0) {
+        console.log("insuficiente invalida");
         return res.status(400).send('Quantidade insuficiente de peças');
       }
+
       await peca.save();
     }
-
-    await montagem.remove();
     res.send('Montagem completada com sucesso');
   } catch (err) {
     res.status(500).send('Erro ao completar montagem');
