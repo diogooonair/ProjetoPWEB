@@ -1,6 +1,7 @@
 /* Fonts Form Google Font ::- https://fonts.google.com/  -:: */
 @import url('https://fonts.googleapis.com/css2?family=Jersey+25+Charted&family=Raleway:ital,wght@0,100..900;1,100..900&family=Sedan+SC&display=swap');
 /* End Fonts */
+
 /* Start Global rules */
 * {
     padding: 0;
@@ -64,7 +65,7 @@ header p {
 }
 
 /* Section headers */
-section h3 {
+section h2 {
     font-family: "Jersey 25 Charted", sans-serif;
     font-weight: 200;
     font-style: normal;
@@ -150,5 +151,35 @@ section {
     margin-bottom: 2em;
     background: rgba(255, 255, 255, 0.1);
     padding: 2%;
+    border-radius: 5px;
+}
+
+nav {
+    background-color: #2ea6ce;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-family: "Raleway", sans-serif;
+    font-weight: 900;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 5px;
 }

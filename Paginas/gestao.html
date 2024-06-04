@@ -12,186 +12,60 @@
     <h2>Gestão de Drones</h2>
     <p>Gerencie as peças e as montagens dos seus drones</p>
 </header>
+<nav>
+    <ul>
+        <li><a href="#adicionarPeca">Adicionar Peça</a></li>
+        <li><a href="#adicionarMontagem">Adicionar Montagem</a></li>
+        <li><a href="#verEstatisticas">Ver Estatísticas</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
 <main>
-    <section id="pecas">
-        <h3>Gestão de Peças</h3>
-        <form id="form-peca">
-            <div class="container">
-                <div class="input-item">
-                    <label for="peca-nome">Nome da Peça:</label>
-                    <input id="peca-nome" class="form-input" type="text" required>
-                </div>
-                <div class="input-item">
-                    <label for="peca-quantidade">Quantidade:</label>
-                    <input id="peca-quantidade" class="form-input" type="number" required>
-                </div>
-                <button type="submit">Adicionar Peça</button>
-            </div>
+    <section id="adicionarPeca">
+        <h2>Adicionar Peça</h2>
+        <form id="adicionarPecaForm">
+            <label for="nome">Nome da Peça:</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" id="quantidade" name="quantidade" required>
+            <button type="submit">Adicionar</button>
         </form>
     </section>
 
-    <section id="montagens">
-        <h3>Gestão de Montagens</h3>
-        <form id="form-montagem">
+    <section id="adicionarMontagem">
+        <h2>Adicionar Montagem</h2>
+        <form id="adicionarMontagemForm">
+            <label for="modeloDrone">Modelo do Drone:</label>
+            <input type="text" id="modeloDrone" name="modeloDrone" required>
+            <label for="pecasNecessarias">Peças Necessárias:</label>
+            <select id="pecasNecessarias" name="pecasNecessarias" multiple required>
+                <!-- As opções serão preenchidas dinamicamente pelo JavaScript -->
+            </select>
+            <button type="submit">Adicionar</button>
+        </form>
+    </section>
+    <section id="completar-montagem">
+        <h2>Adicionar Montagem</h2>
+        <form id="form-completar-montagem">
             <div class="container">
                 <div class="input-item">
-                    <label for="drone-modelo">Modelo do Drone:</label>
-                    <input id="drone-modelo" class="form-input" type="text" required>
-                </div>
-                <div class="input-item">
-                    <label for="pecas-necessarias">Peças Necessárias:</label>
-                    <select id="pecas-necessarias" class="form-input" multiple required>
-                        <!-- Opções de peças serão adicionadas dinamicamente via JavaScript -->
+                    <label for="montagem-id">Selecionar Montagem:</label>
+                    <select id="montagem-id" class="form-input" required>
+                        <!-- Opções de montagens serão adicionadas dinamicamente via JavaScript -->
                     </select>
                 </div>
-                <button type="submit">Adicionar Montagem</button>
+                <button type="submit">Completar Montagem</button>
             </div>
         </form>
     </section>
 
-    <section id="estatisticas">
-        <h3>Estatísticas</h3>
-        <div class="container">
-            <canvas id="grafico-pecas" width="400" height="200"></canvas>
-            <canvas id="grafico-montagens" width="400" height="200"></canvas>
-        </div>
+    <section id="verEstatisticas">
+        <h2>Estatísticas</h2>
+        <canvas id="pecasChart"></canvas>
+        <canvas id="montagensChart"></canvas>
     </section>
 </main>
 
-<script>
-    // Função para carregar opções de peças
-    async function carregarPecas() {
-        try {
-            const response = await fetch('/pecas');
-            const pecas = await response.json();
-
-            const selectElement = document.getElementById('pecas-necessarias');
-            selectElement.innerHTML = ''; // Limpar as opções atuais
-            pecas.forEach(peca => {
-                const option = document.createElement('option');
-                option.value = peca._id; // Supondo que o ID da peça seja utilizado como valor
-                option.text = peca.nome;
-                selectElement.appendChild(option);
-            });
-        } catch (error) {
-            console.error('Erro ao carregar opções de peças:', error);
-        }
-    }
-
-    // Chamar a função para carregar as opções de peças quando a página carregar
-    window.onload = carregarPecas;
-
-    // Adicionar peça
-    document.getElementById('form-peca').addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        const nome = document.getElementById('peca-nome').value;
-        const quantidade = document.getElementById('peca-quantidade').value;
-
-        try {
-            const response = await fetch('/pecas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ nome, quantidade })
-            });
-
-            if (response.ok) {
-                alert('Peça adicionada com sucesso');
-                document.getElementById('form-peca').reset();
-                carregarPecas(); // Recarregar opções de peças
-            } else {
-                alert('Erro ao adicionar peça');
-            }
-        } catch (error) {
-            console.error('Erro ao adicionar peça:', error);
-        }
-    });
-
-    // Adicionar montagem
-    document.getElementById('form-montagem').addEventListener('submit', async function(event) {
-        event.preventDefault();
-
-        const modeloDrone = document.getElementById('drone-modelo').value;
-        const pecasNecessarias = Array.from(document.getElementById('pecas-necessarias').selectedOptions).map(option => option.value);
-
-        try {
-            const response = await fetch('/montagens', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ modeloDrone, pecasNecessarias })
-            });
-
-            if (response.ok) {
-                alert('Montagem adicionada com sucesso');
-                document.getElementById('form-montagem').reset();
-            } else {
-                alert('Erro ao adicionar montagem');
-            }
-        } catch (error) {
-            console.error('Erro ao adicionar montagem:', error);
-        }
-    });
-
-    // Função para criar gráficos
-    function criarGraficos() {
-        const ctxPecas = document.getElementById('grafico-pecas').getContext('2d');
-        const ctxMontagens = document.getElementById('grafico-montagens').getContext('2d');
-
-        // Gráfico de barras para quantidade de peças
-        new Chart(ctxPecas, {
-            type: 'bar',
-            data: {
-                labels: ['Peça A', 'Peça B', 'Peça C'], // Exemplos de nomes de peças
-                datasets: [{
-                    label: 'Quantidade de Peças',
-                    data: [10, 5, 8], // Exemplos de quantidades
-                    backgroundColor: ['rgba(75, 192, 192, 0.2)'],
-                    borderColor: ['rgba(75, 192, 192, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Gráfico de linhas para montagens
-        new Chart(ctxMontagens, {
-            type: 'line',
-            data: {
-                labels: ['Janeiro', 'Fevereiro', 'Março'], // Exemplos de meses
-                datasets: [{
-                    label: 'Montagens por Mês',
-                    data: [3, 2, 4], // Exemplos de montagens
-                    fill: false,
-                    borderColor: 'rgba(153, 102, 255, 1)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-
-    // Chamar a função para criar gráficos quando a página carregar
-    window.onload = function() {
-        carregarPecas();
-        criarGraficos();
-    };
-</script>
-
+<script src="ubi.js"></script>
 </body>
 </html>
